@@ -6,7 +6,7 @@
 
 just basic simulation 
 
-'''cpp
+```cpp
    #include<bits/stdc++.h> 
    using namespace std; 
    #define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
