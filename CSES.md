@@ -872,6 +872,73 @@ just basic simulation
    */
    ```
    
+   ### 14) Apple Division
+   
+   used bit manipulation to find all subsets of apples and found minimum difference
+   
+   ```cpp
+      #include<bits/stdc++.h> 
+   using namespace std; 
+   #define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+   const long long  INF = 1e18;
+   const long long mod=1e9+7 ;
+   #define ll long long int
+   void inputoutput()
+   {
+      ios_base::sync_with_stdio(0);
+      cin.tie(0); 
+      #ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+      #endif
+          
+   }
+
+
+
+   void solve()
+   {
+      ll n ;
+      cin>>n;
+      vector<ll> a(n);
+      ll sum=0;
+      for(ll i=0 ; i<n ; ++i)
+      {
+        cin>>a[i];
+        sum+=a[i];
+      }
+      ll ans=INT_MAX ;
+      for(ll i=0 ; i< 1<<n  ; ++i)
+      {
+        ll tsum=0;
+        for(ll j=0 ; j<n ; ++j)
+        {
+          if(i & 1<<j)
+            tsum+=a[j];
+        }
+        ans=min(ans,abs(sum-tsum-tsum));
+      }
+      cout<<ans ;
+   }
+
+   int main()
+   { 
+     inputoutput() ;
+
+     int t=1;
+     // cin>>t;
+     while(t--)
+      solve();
+      
+      return 0;
+   }
+
+   /*
+         
+   */
+   ```
+   
+   
    
    
    
