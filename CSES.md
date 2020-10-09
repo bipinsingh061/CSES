@@ -938,6 +938,104 @@ just basic simulation
    */
    ```
    
+   ### 15) Apartments 
+   
+   used multisets to store apartment sizes  , also sorting the desired apartment sizes is important  , then for each desired apartment size found out the lower bound of a[i]-k , if it was in the range need deleted it ,
+   
+   ```cpp
+   #include<bits/stdc++.h> 
+   using namespace std; 
+   #define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+   const long long  INF = 1e18;
+   const long long mod=1e9+7 ;
+   #define ll long long int
+   void inputoutput()
+   {
+      ios_base::sync_with_stdio(0);
+      cin.tie(0); 
+      #ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+      #endif
+          
+   }
+    
+   ll n,m,k;
+   vector<ll> a(2e5+1000,INF);
+   multiset<ll> ms ;
+ 
+   void solve()
+   {
+      cin>>n>>m>>k;
+ 
+      for(ll i=0 ; i<n ; ++i)
+        cin>>a[i];
+      sort(a.begin(), a.end());
+ 
+      for(ll i=0 ; i<m ; ++i)
+      {
+        ll x;
+        cin>>x ;
+        ms.insert(x);
+      }
+      ll ans=0;
+      for(ll i=0 ; i<n ; ++i)
+      {
+        auto closest = ms.lower_bound(a[i]-k);
+        if(*closest<=a[i]+k && *closest>=a[i]-k && closest!=ms.end())
+        {
+          ++ans;
+          ms.erase(closest);
+        }
+      }
+      cout<<ans;
+   }
+ 
+   int main()
+   { 
+     inputoutput() ;
+ 
+     int t=1;
+     // cin>>t;
+     while(t--)
+      solve();
+      
+      return 0;
+   }
+ 
+   /*
+      4 3 5
+      60 45 80 60
+      30 60 75    
+ 
+      for any ai allowed sizes are  : 
+ 
+      ai-k ...........ai-1 , ai , ai+1 ,ai+2 , ai+3 ,.......... ai+k
+      also k is huge upto 10^9
+ 
+      maybe binary search ai on array b(b is sorted) 
+      and see if it works 
+ 
+      4 3 5
+      60 45 80 60
+      30 60 75
+ 
+      10 10 10
+      90 41 20 39 49 21 35 31 74 86
+      4 7 14 24 24 60 82 82 85 95   
+      14 24 24 7 82 85 82 4 60 95
+ 
+      
+      4 3 5
+      60 45 80 60
+      30 75
+      
+  
+   */
+   ```
+   
+   ### 16)
+   
    
    
    
