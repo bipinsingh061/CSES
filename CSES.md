@@ -1381,7 +1381,79 @@ just basic simulation
    ```
    
    
-   ### 21) 
+   ### 21)  Restaurent Customers
+   
+   assign customers coming to restaurent as 1's and leaving as -1's store them in pairs with thier visiting times , sort the vector wrt. visiting times , problem reduces to finding max. prefix sum 
+   
+   ```cpp
+   #include<bits/stdc++.h> 
+   using namespace std; 
+   #define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+   const long long  INF = 1e18;
+   const long long mod=1e9+7 ;
+   #define ll long long int
+   void inputoutput()
+   {
+      ios_base::sync_with_stdio(0);
+      cin.tie(0); 
+      #ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+      #endif
+          
+   }
+
+   bool comp(pair<ll,ll> &a , pair<ll,ll> &b)
+   {
+      return a.first < b.first ;
+   }
+    
+   void solve()
+   {
+      ll n;
+      cin>>n ;
+
+      vector< pair<ll,ll> > a ;
+
+      for(ll i=0 ; i<n ; ++i)
+      {
+        ll x,y;
+        cin>>x>>y; 
+        a.push_back(make_pair(x,1));
+        a.push_back(make_pair(y,-1));
+      }
+
+      sort(a.begin(),a.end());
+      ll csum=0;
+      ll ans=0;
+
+      for(auto i : a)
+      {
+        csum+=i.second;
+        ans=max(ans,csum);
+      }
+      cout<<ans;
+
+   }
+ 
+   int main()
+   { 
+     inputoutput() ;
+ 
+     int t=1;
+     // cin>>t;
+     while(t--)
+      solve();
+      
+      return 0;
+   }
+ 
+   /* 
+        
+   */
+   ```
+   
+   ### 22) 
    
    
    
