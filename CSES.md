@@ -938,7 +938,68 @@ just basic simulation
    */
    ```
    
-   ### 15) Apartments 
+   #### 15 ,16 not done 
+   
+   ## Day 2
+   
+   ### 17) Distinct Numbers 
+   
+   easy problem  , store all elements in set , print set size 
+   
+   ```cpp
+   #include<bits/stdc++.h> 
+   using namespace std; 
+   #define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+   const long long  INF = 1e18;
+   const long long mod=1e9+7 ;
+   #define ll long long int
+   void inputoutput()
+   {
+      ios_base::sync_with_stdio(0);
+      cin.tie(0); 
+      #ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+      #endif
+          
+   }
+ 
+ 
+ 
+   void solve()
+   {
+      ll n;
+      cin>>n;
+      set<ll> st ;
+      for(ll i=0 ;i<n ; ++i)
+      {
+        ll x;
+        cin>>x;
+        st.insert(x);
+      }
+      cout<<st.size();
+   }
+ 
+   int main()
+   { 
+     inputoutput() ;
+ 
+     int t=1;
+     // cin>>t;
+     while(t--)
+      solve();
+      
+      return 0;
+   }
+ 
+   /*
+        
+ 
+   */
+   ```
+   
+   
+   ### 18) Apartments 
    
    used multisets to store apartment sizes  , also sorting the desired apartment sizes is important  , then for each desired apartment size found out the lower bound of a[i]-k , if it was in the range need deleted it ,
    
@@ -1034,7 +1095,7 @@ just basic simulation
    */
    ```
    
-   ### 16)
+   ### 18)
    
    
    
