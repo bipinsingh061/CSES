@@ -1094,8 +1094,294 @@ just basic simulation
   
    */
    ```
+   ## Day 3 
    
-   ### 19)
+   ### 19) Ferris Wheel
+   
+   do not overthink with multisets  , two pointer technique works fine 
+   
+   ```cpp
+   #include<bits/stdc++.h> 
+   using namespace std; 
+   #define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+   const long long  INF = 1e18;
+   const long long mod=1e9+7 ;
+   #define ll long long int
+   void inputoutput()
+   {
+      ios_base::sync_with_stdio(0);
+      cin.tie(0); 
+      #ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+      #endif
+          
+   }
+    
+   void solve()
+   {
+      ll n,k;
+      cin>>n>>k ;
+
+      vector<ll> a(n);
+
+      for(ll i=0 ; i<n ; ++i)
+        cin>>a[i];
+      sort(a.begin(),a.end());
+
+      ll i=0 , j=n-1 ;
+      ll ans=0;
+      while(i<=j)
+      {
+        if(a[i]+a[j]>k)
+          --j;
+        else 
+        {
+          ++i;
+          --j;
+        }
+        ++ans;
+      }
+      cout<<ans ;
+
+   }
+ 
+   int main()
+   { 
+     inputoutput() ;
+ 
+     int t=1;
+     // cin>>t;
+     while(t--)
+      solve();
+      
+      return 0;
+   }
+ 
+   /* 
+        4 10
+        7 2 3 9
+
+        2 3 7 9
+
+
+        10 15
+        9 8 8 9 10 8 5 8 7 10
+
+        5 7 8 8 8 8 9 9 10 10
+
+
+        
+
+   */
+   ```
+   
+   ### 20) Conncert Tickets
+   
+   approach 1) (dumb approach) 
+   
+   
+   this problem is basically finding multiple queries to the question : find maximum element less that or equal to a number  , also once found the answer the value can no longer be used in other queries  ( item is deleted ) 
+   
+   used a multiset to store ticket prices , went through each max. price of customer (x) , found lower bound and upper bounds of x , if answer to query doesn't exist it can be checked by condition  :
+   
+   lowerbound==upperbound  and  upperbound==ms.begin()
+   
+   then find if any of lower bound or upper bound points to exact val of x , push x   , if not then ,
+   
+   decrease upper_bound by 1 (--ub)  , and then check ub if its possible
+   
+   approach 2)   
+   
+   input elements in multiset in decreasing order then lower_bound returns max val less than or equal to x
+  
+   ### approach 1 (not good)
+   
+   
+   ```cpp
+   #include<bits/stdc++.h> 
+   using namespace std; 
+   #define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+   const long long  INF = 1e18;
+   const long long mod=1e9+7 ;
+   #define ll long long int
+   void inputoutput()
+   {
+      ios_base::sync_with_stdio(0);
+      cin.tie(0); 
+      #ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+      #endif
+          
+   }
+    
+   void solve()
+   {
+      ll n,m ;
+      cin>>n>>m;
+ 
+      multiset<ll> ms ;
+ 
+      for(ll i=0 ; i<n ; ++i)
+      {
+        ll x;
+        cin>>x;
+        ms.insert(x);
+      }
+      vector<ll> ans ;
+ 
+      for(ll i=0 ; i<m ; ++i)
+      {
+        ll x;
+        cin>>x;
+ 
+        auto lb = ms.lower_bound(x);
+        auto ub = ms.upper_bound(x);
+        if(*lb==*ub  && ub==ms.begin())
+        {
+          ans.push_back(-1);
+          continue;
+        }
+        if(*lb==x)
+        {
+          ans.push_back(x);
+          ms.erase(lb);
+          continue;
+        }
+        if(*ub==x)
+        {
+          ans.push_back(x);
+          ms.erase(ub);
+          continue;
+        }
+        --ub ;
+        if(*ub>x)
+        {
+          ans.push_back(-1);
+          continue;
+        }
+        if(*ub<=x)
+        {
+          ans.push_back(*ub);
+          ms.erase(ub);
+          continue;
+        }
+      }
+      for(auto i : ans)
+        cout<<i<<"\n";
+   }
+ 
+   int main()
+   { 
+     inputoutput() ;
+ 
+     int t=1;
+     // cin>>t;
+     while(t--)
+      solve();
+      
+      return 0;
+   }
+ 
+   /* 
+        5 3
+        5 3 7 8 5
+        4 8 3
+        
+        3
+        8
+        -1
+ 
+        
+ 
+   */
+   ```
+   
+   ### approach 2 (better)
+   
+   ```cpp
+   #include<bits/stdc++.h> 
+   using namespace std; 
+   #define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+   const long long  INF = 1e18;
+   const long long mod=1e9+7 ;
+   #define ll long long int
+   void inputoutput()
+   {
+      ios_base::sync_with_stdio(0);
+      cin.tie(0); 
+      #ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+      #endif
+          
+   }
+    
+   void solve()
+   {
+      ll n,m ;
+      cin>>n>>m;
+
+      multiset<ll,greater<ll>> ms;
+
+      for(ll i=0 ; i<n ; ++i)
+      {
+        ll x;
+        cin>>x;
+        ms.insert(x);
+      }
+
+      vector<ll> ans;
+      for(ll i=0 ; i<m ; ++i)
+      {
+        ll x;
+        cin>>x;
+        auto it=ms.lower_bound(x);
+        if(it==ms.end())
+        {
+          ans.push_back(-1);
+          continue;
+        }
+        else
+        {
+          ans.push_back(*it);
+          ms.erase(it);
+        }
+      }
+      for(auto i : ans)
+        cout<<i<<"\n";
+
+   }
+ 
+   int main()
+   { 
+     inputoutput() ;
+ 
+     int t=1;
+     // cin>>t;
+     while(t--)
+      solve();
+      
+      return 0;
+   }
+ 
+   /* 
+        5 3
+        5 3 7 8 5
+        4 8 3
+        
+        3
+        8
+        -1
+ 
+        
+ 
+   */
+   ```
+   
+   
+   ### 21) 
    
    
    
