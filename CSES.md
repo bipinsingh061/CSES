@@ -1452,8 +1452,285 @@ just basic simulation
         
    */
    ```
+   ## Day 4
    
-   ### 22) 
+   ### 22) Movie Festival 
+   
+   you sort the the start and end times w.r.t thier end times , and ofcourse you watch the first movie , you watch every next movie only when it starts after the previous movie watched
+   
+   ```cpp
+   #include<bits/stdc++.h> 
+   using namespace std; 
+   #define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+   const long long  INF = 1e18;
+   const long long mod=1e9+7 ;
+   #define ll long long int
+   void inputoutput()
+   {
+      ios_base::sync_with_stdio(0);
+      cin.tie(0); 
+      #ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+      #endif
+          
+   }
+
+   bool comp(pair<ll,ll> &a , pair<ll,ll> &b)
+   {
+    return a.second<b.second ;
+   }
+    
+   void solve()
+   {
+      ll n ;
+      cin>>n ;
+
+      vector< pair<ll,ll> > a;
+
+      for(ll i=0 ; i<n ; ++i)
+      {
+        ll x,y;
+        cin>>x>>y;
+        a.push_back(make_pair(x,y));
+      }
+
+      sort(a.begin(),a.end(),comp);
+
+      ll ans=1;
+
+      ll endtime=a[0].second ;
+
+      for(ll i=1 ; i<n ; ++i)
+      {
+        if(a[i].first>=endtime)
+        {
+          ++ans;
+          endtime=a[i].second;
+        }
+      }
+
+      cout<<ans;
+
+
+   }
+ 
+   int main()
+   { 
+     inputoutput() ;
+ 
+     int t=1;
+     // cin>>t;
+     while(t--)
+      solve();
+      
+      return 0;
+   }
+ 
+   /* 
+
+
+   */
+   ```
+   
+   ### 23) Sum of Two Values 
+   
+   problem looks very simple and easy at first glance , but isn't that simple  
+   
+   idea is to store indices of elements in a map 
+   
+   ```cpp
+   #include<bits/stdc++.h> 
+   using namespace std; 
+   #define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+   const long long  INF = 1e18;
+   const long long mod=1e9+7 ;
+   #define ll long long int
+   void inputoutput()
+   {
+      ios_base::sync_with_stdio(0);
+      cin.tie(0); 
+      #ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+      #endif
+          
+   }
+
+    
+   void solve()
+   {
+      ll n,k ;
+      cin>>n>>k;
+
+      map<ll,ll> mp ;
+      vector<ll> a(n) ;
+
+      for(ll i=0 ; i<n ; ++i)
+      {
+        cin>>a[i];
+        mp[a[i]]=i;
+      }
+      bool found=false;
+      for(ll i=0  ; i<n ; ++i)
+      {
+        if(mp.find(k-a[i])!=mp.end() && mp[k-a[i]]!=i)
+        {
+          found=true;
+          cout<<i+1<<" "<<mp[k-a[i]]+1<<"\n";
+          return ;
+        }
+      }
+
+      if(!found)
+        cout<<"IMPOSSIBLE";
+
+   }
+ 
+   int main()
+   { 
+     inputoutput() ;
+ 
+     int t=1;
+     // cin>>t;
+     while(t--)
+      solve();
+      
+      return 0;
+   }
+ 
+   /* 
+
+
+   */
+   ```
+   
+   ### 24) Maximum Subarray Sum
+   
+   keep track of max. current sum ,at each point find maximum of the cmax's 
+   
+   ```cpp
+   #include<bits/stdc++.h> 
+   using namespace std; 
+   #define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+   const long long  INF = 1e18;
+   const long long mod=1e9+7 ;
+   #define ll long long int
+   void inputoutput()
+   {
+      ios_base::sync_with_stdio(0);
+      cin.tie(0); 
+      #ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+      #endif
+          
+   }
+
+    
+   void solve()
+   {
+      ll n ;
+      cin>>n;
+      vector<ll> a(n) ;
+      for(ll i=0 ; i<n ; ++i)
+        cin>>a[i] ;
+
+      ll cmax=0;
+      ll ans=-INF ;
+      for(ll i=0 ; i<n ; ++i)
+      {
+        cmax=max(a[i],cmax+a[i]);
+        ans=max(ans,cmax);
+      }
+      cout<<ans;
+
+   }
+ 
+   int main()
+   { 
+     inputoutput() ;
+ 
+     int t=1;
+     // cin>>t;
+     while(t--)
+      solve();
+      
+      return 0;
+   }
+ 
+   /* 
+
+
+   */
+   ```
+   
+   ### 25) Stick Lengths
+   
+   sort the stick lengths , cut them w.r.t the middle stick
+   
+   ```cpp
+   #include<bits/stdc++.h> 
+   using namespace std; 
+   #define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+   const long long  INF = 1e18;
+   const long long mod=1e9+7 ;
+   #define ll long long int
+   void inputoutput()
+   {
+      ios_base::sync_with_stdio(0);
+      cin.tie(0); 
+      #ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+      #endif
+          
+   }
+
+    
+   void solve()
+   {
+      ll n;
+      cin>>n;
+      vector<ll> a(n);
+
+      for(ll i=0 ; i<n ; ++i)
+        cin>>a[i];
+
+      sort(a.begin(), a.end());
+
+      ll tocm ;
+
+      tocm=a[n/2];
+
+      ll ans=0;
+
+      for(ll i=0 ; i<n ; ++i)
+        ans+=abs(tocm-a[i]);
+      cout<<ans;
+
+
+   }
+ 
+   int main()
+   { 
+     inputoutput() ;
+ 
+     int t=1;
+     // cin>>t;
+     while(t--)
+      solve();
+      
+      return 0;
+   }
+ 
+   /* 
+
+
+   */
+   ```
+   
+   ### 26) 
    
    
    
