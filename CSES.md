@@ -1729,8 +1729,169 @@ just basic simulation
 
    */
    ```
+   ## Day 5 (skipped)
    
-   ### 26) 
+   ## Day 6
+   
+   ### 26)  Playlist 
+   
+   the trick is to store indices of elements as map values , and finding length of sequence using two pointers l and r (r-l+1) ,whenever we encounter i'th element repeating we change l to mp[i]+1 , we also make sure the repeated value's map value to be greater than mp[i] ,
+   
+   ```cpp
+   #include<bits/stdc++.h> 
+#include<chrono>
+   using namespace std; 
+   using namespace std::chrono; 
+   #define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+   const long long  INF = 1e18;
+   const long long mod=1e9+7 ;
+   #define ll long long int
+   void inputoutput()
+   {
+      ios_base::sync_with_stdio(0);
+      cin.tie(0); 
+      #ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+      #endif
+          
+   }
+
+void solve()
+{
+  ll n;
+  cin>>n;
+
+  vector<ll> a(n);
+
+  for(ll i=0 ; i<n ; ++i)
+    cin>>a[i];
+
+  map<ll,ll> mp ;
+    
+  ll accept=0;
+  ll ans=-INF ;
+      
+  for(ll i=0 ; i<n ; ++i)
+  {
+    if(mp.find(a[i])!=mp.end() && mp[a[i]]>=accept)
+    {
+      accept=mp[a[i]]+1;
+      mp.at(a[i])=i;
+    }
+    else
+    {
+      mp[a[i]]=i;
+    }
+    ans=max(ans,i-accept+1);
+  }
+  cout<<ans;
+
+}
+
+int main()
+{
+  inputoutput();
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+```
+
+   ### 27) Towers 
+   
+   because we need to use all cubes and we cannot place first cube onto any other cube we start making a tower of first cube  , from there on if we find cube greater than or equal to any other previous cubes , we obviosly need another tower , if the new cube is smaller than maxsize cube , we place on top of upper_bound of this's cube's size and update its value to new cube ( by erasing and adding another element )  , all this is done by using multiset 
+   
+   #### to delete one element from set/multiset we could use "find" like this 
+   
+   ```txt
+   auto it = s.upper_bound(a[i]);
+      auto it2=s.find(*it);
+      s.erase(it2);
+  ```
+  
+  
+      
+   
+   ```cpp
+   #include<bits/stdc++.h> 
+#include<chrono>
+   using namespace std; 
+   using namespace std::chrono; 
+   #define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+   const long long  INF = 1e18;
+   const long long mod=1e9+7 ;
+   #define ll long long int
+   void inputoutput()
+   {
+      ios_base::sync_with_stdio(0);
+      cin.tie(0); 
+      #ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+      #endif
+          
+   }
+
+void solve()
+{
+  ll n;
+  cin>>n ;
+
+  vector<ll> a(n);
+
+  for(ll i=0 ; i<n ; ++i)
+    cin>>a[i];
+
+  multiset<ll> s;
+  s.insert(a[0]);
+  ll ans=1 ;
+
+  for(ll i=1 ; i<n ; ++i)
+  {
+    if(a[i]>=*s.rbegin())
+    {
+      ++ans;
+      s.insert(a[i]);
+    }
+    else
+    {
+      auto it = s.upper_bound(a[i]);
+      auto it2=s.find(*it);
+      s.erase(it2);
+      s.insert(a[i]);
+    }
+  }
+  cout<<ans;
+
+}
+
+int main()
+{
+  inputoutput();
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+
+/*
+    5
+    3 8 2 1 5
+
+    3 8 9 12 16 17  20 50   13
+
+    upper bound 
+
+
+
+
+
+*/
+```
+
+### 28) 
    
    
    
