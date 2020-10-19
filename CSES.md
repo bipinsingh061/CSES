@@ -1891,7 +1891,80 @@ int main()
 */
 ```
 
-### 28) 
+### 28) Traffic lights 
+
+maintain a set of all points (n)  , initially insert 0 and x , because these are initial points , and keep inserting them when points arrive , whats also important is to maintain , another multiset to store length of segments , initially its only x , as points arrive , we know that some some segments are going to be divided  , so ,  find these segments from the set of points and delete the length of segment from multiset , and add new segments to multiset , use "*ms.rbegin()" to find max length segment so far
+
+```cpp
+#include<bits/stdc++.h> 
+using namespace std; 
+#define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+const long long  INF = 1e18;
+const long long mod=1e9+7 ;
+#define ll long long 
+
+
+void solve()
+{
+    ll x,n;
+    cin>>x>>n;
+
+    set<ll> points = {0,x};
+    multiset<ll> length ={x} ; // lengths of segments
+
+    vector<ll> ans ;
+
+    for(ll i=0 ; i<n ; ++i)
+    {
+      ll point ;
+      cin>>point ;
+      // find right place to insert this point 
+      auto it = points.upper_bound(point);
+
+      int left,right ; // range 
+
+      left=*prev(it);
+      right=*it ;
+
+      // first erase this existing segment
+
+      length.erase(length.find(right-left));
+
+      // now insert new ranges 
+
+      length.insert(point-left);
+      length.insert(right-point);
+
+      // now print max of all lengths
+
+      // insert new point 
+
+      points.insert(point);
+
+      ans.push_back(*length.rbegin());
+
+    }
+
+    for(auto i : ans)
+      cout<<i<<" ";
+  
+}
+
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+
+/*
+
+*/
+```
+
    
    
    
