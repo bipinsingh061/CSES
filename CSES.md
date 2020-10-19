@@ -1965,6 +1965,372 @@ int main()
 */
 ```
 
+### 29) Counting Rooms 
+
+dfs on every .'s , use a vis array to keep track of visited rooms , and find number of connected components
+
+```cpp
+#include<bits/stdc++.h> 
+using namespace std; 
+#define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+const long long  INF = 1e18;
+const long long mod=1e9+7 ;
+#define ll long long 
+
+
+int n,m;
+char ar[1000][1000];
+int dx[]={-1,0,1,0};
+int dy[]={0,1,0,-1};
+bool vis[1000][1000];
+
+bool legal(int x,int y)
+{
+  if(x<0 || x>=n || y<0 || y>=m)
+    return false;
+  return true;
+}
+
+void dfs(int x,int y)
+{
+  vis[x][y]=true;
+  for(int i=0 ; i<4 ; ++i)
+  {
+    int nx=x+dx[i];
+    int ny=y+dy[i];
+    if(legal(nx,ny))
+    {
+      if(vis[nx][ny])
+        continue;
+      if(ar[nx][ny]=='#')
+        continue;
+      dfs(nx,ny);
+    }
+  }
+}
+
+void solve()
+{
+  memset(vis,false,sizeof(vis));
+
+  cin>>n>>m;
+  for(int i=0 ; i<n ; ++i)
+  {
+    for(int j=0 ; j<m ; ++j)
+      cin>>ar[i][j];
+  }
+
+  int ans=0;
+
+  for(int i=0 ; i<n ; ++i)
+  {
+    for(int j=0 ; j<m ; ++j)
+    {
+      if(ar[i][j]=='.' && !vis[i][j])
+      {
+        dfs(i,j);
+        ++ans;
+      }
+    }
+  }
+  cout<<ans<<"\n" ;
+}
+
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+
+/*
+
+*/
+```
+
+### 30) Labyrinth 
+
+used bfs in this  
+
+```cpp
+#include<bits/stdc++.h> 
+using namespace std; 
+#define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+const long long  INF = 1e18;
+const long long mod=1e9+7 ;
+#define ll long long 
+
+int n,m;
+char ar[1000][1000];
+queue< pair<int,int> > q;
+int dx[]={-1,0,1,0};
+int dy[]={0,1,0,-1};
+bool vis[1000][1000];
+int p[1000][1000];
+
+bool legal(int x,int y)
+{
+  if(x<0 || x>=n || y<0 || y>=m)
+    return false;
+  return true;
+}
+
+void bfs(int x,int y)
+{
+  q.push(make_pair(x,y));
+  vis[x][y]=true;
+
+  while(!q.empty())
+  {
+    int vx=q.front().first;
+    int vy=q.front().second;
+    q.pop();
+
+    for(int i=0 ; i<4 ; ++i)
+    {
+      int nx=vx+dx[i];
+      int ny=vy+dy[i];
+      if(!legal(nx,ny))
+        continue;
+      if(vis[nx][ny])
+        continue;
+      if(ar[nx][ny]=='#')
+        continue;
+      vis[nx][ny]=true;
+      p[nx][ny]=i;
+      q.push(make_pair(nx,ny));
+    }
+  }
+}
+
+void solve()
+{
+  memset(vis,false,sizeof(vis));
+  cin>>n>>m ;
+  pair<int,int> begin ;
+  pair<int,int> end ;
+
+  for(int i=0 ; i<n ; ++i)
+  {
+    for(int j=0 ; j<m ; ++j)
+    {
+      cin>>ar[i][j];
+      if(ar[i][j]=='A')
+        begin=make_pair(i,j);
+      else if(ar[i][j]=='B')
+        end=make_pair(i,j);
+    }
+  }
+
+
+  bfs(begin.first,begin.second);
+
+  if(!vis[end.first][end.second])
+    cout<<"NO\n";
+  else
+  {
+    string path ;
+    cout<<"YES\n";
+    while(end!=begin)
+    {
+      int k=p[end.first][end.second];
+      if(k==0)
+        path.push_back('U');
+      else if(k==1)
+        path.push_back('R');
+      else if(k==2)
+        path.push_back('D');
+      else
+        path.push_back('L');
+      end=make_pair(end.first-dx[k],end.second-dy[k]);
+    }
+    reverse(path.begin(), path.end());
+    cout<<path.size()<<"\n";
+    cout<<path<<"\n";
+  }
+
+}
+
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+
+/*
+
+*/
+```
+
+### 31) Building Roads 
+
+finding number of connected components , ans is comp-1 , 
+
+```cpp
+#include<bits/stdc++.h> 
+using namespace std; 
+#define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+const long long  INF = 1e18;
+const long long mod=1e9+7 ;
+#define ll long long 
+
+ll n,m;
+vector<ll> adj[100500];
+bool vis[100500];
+
+void dfs(ll x)
+{
+  vis[x]=true;
+  for(auto u :  adj[x])
+  {
+    if(!vis[u])
+      dfs(u);
+  }
+}
+
+void solve()
+{
+  memset(vis,false,sizeof(vis));
+  cin>>n>>m ;
+  for(ll i=0 ; i<m ; ++i)
+  {
+    ll x,y;
+    cin>>x>>y;
+    adj[x].push_back(y);
+    adj[y].push_back(x);
+  }
+  ll ans=0;
+  vector< pair<ll,ll> > vp ;
+  vector<ll> res ;
+
+  for(ll i=1 ; i<=n ; ++i)
+  {
+    if(!vis[i])
+    {
+      if(res.size()%2==0)
+        res.push_back(i);
+      else
+      {
+        res.push_back(i);
+        res.push_back(i);
+      }
+      dfs(i);
+      ++ans;
+    }
+  }
+  cout<<ans-1<<"\n";
+
+  for(ll i=0 ; i<res.size()-1 ; i+=2)
+    cout<<res[i]<<" "<<res[i+1]<<"\n";
+}
+
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+
+/*
+
+*/
+```
+
+### 32) Message Routes
+
+simple bfs on 1 works for this 
+
+```cpp
+#include<bits/stdc++.h> 
+using namespace std; 
+#define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+const long long  INF = 1e18;
+const long long mod=1e9+7 ;
+#define ll long long 
+
+int n,m ;
+vector<int> adj[100500];
+bool vis[100500];
+vector<int> p(100500);
+queue<int> q;
+
+void bfs(int x)
+{
+  vis[x]=true;
+  q.push(x);
+  p[x]=-1;
+  while(!q.empty())
+  {
+    int v=q.front();
+    q.pop();
+
+    for(auto u: adj[v])
+    {
+      if(!vis[u])
+      {
+        vis[u]=true;
+        q.push(u);
+        p[u]=v;
+      }
+    }
+  }
+}
+
+void solve()
+{
+  cin>>n>>m;
+  for(int i=0 ; i<m ; ++i)
+  {
+    int a,b;
+    cin>>a>>b;
+    adj[a].push_back(b);
+    adj[b].push_back(a);
+  }
+      bfs(1);
+
+  if(!vis[n])
+  {
+    cout<<"IMPOSSIBLE\n";
+    return ;
+  }    
+      vector<int> steps ;
+
+
+  for(int v=n ; v!=-1 ; v=p[v])
+    steps.push_back(v);
+  reverse(steps.begin(), steps.end());
+  cout<<steps.size()<<"\n";
+  for(auto i  :steps)
+    cout<<i<<" ";
+
+}
+
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+
+/*
+
+*/
+```
+
+### 33)
    
    
    
