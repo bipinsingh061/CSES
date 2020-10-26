@@ -2330,7 +2330,90 @@ int main()
 */
 ```
 
-### 33)
+## Enough of CSES , now will be uploading Useful Algo's Learned during practice : 
+
+### finding max-length subarry such that the sum of subarray is <=t ( not 100 % sure this algo works or not , but this worked in codeforces 279B Books )
+
+```cpp
+#include<bits/stdc++.h> 
+using namespace std; 
+#define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+const long long  INF = 1e18;
+const long long mod=1e9+7 ;
+#define ll long long 
+
+ll n,t;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void solve()
+{
+	cin>>n>>t;
+
+	vector<ll> a(n);
+
+	for(ll i=0 ; i<n ; ++i)
+		cin>>a[i];
+
+	ll cmax=0;
+	ll ans=-INF;
+	ll len=0;
+	ll k=0;
+
+	for(ll i=0 ; i<n ; ++i)
+	{
+		cmax+=a[i];
+		if(cmax>t)
+		{
+			cmax=cmax-a[k++];
+			ans=max(ans,len);
+			--len;
+		}
+		++len;
+	}
+	ans=max(ans,len);
+
+	cout<<ans<<"\n";
+
+}
+
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+
+
+
+/*
+	2 10
+	6 4	
+
+*/
+```
+
+
    
    
    
