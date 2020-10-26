@@ -317,7 +317,9 @@ just basic simulation
    ```
    ### 6)Number Spiral ( too much observation required )
    
-   requires observation , we have two cases y>x or x>y   , then we find the max element that possibly could be in that row (squared observation) 
+   requires observation , we have two cases y>x or x>y   , then we 
+   
+   the max element that possibly could be in that row (squared observation) 
    then we decrease or increase x by odd/even observation 
    ```cpp
       #include<bits/stdc++.h> 
