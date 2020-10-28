@@ -2346,25 +2346,6 @@ const long long mod=1e9+7 ;
 
 ll n,t;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void solve()
 {
 	cin>>n>>t;
