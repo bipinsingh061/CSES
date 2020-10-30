@@ -2396,7 +2396,268 @@ int main()
 */
 ```
 
+### CSES DP-1 Dice Combinations 
 
+explanation in code...
+
+```cpp
+	#include<bits/stdc++.h> 
+using namespace std; 
+#define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+const long long  INF = 1e18;
+const long long mod=1e9+7 ;
+#define ll long long 
+
+
+void solve()
+{
+	int n;
+	cin>>n ;
+
+	/* 	f(n)=no. of ways of making sum n using dice
+		
+		if I know no. of ways to make sum n-1 = f(n-1)
+
+		if f(n-1) is known/computed 
+		first I bring sum (n-1) using f(n-1) ways 
+		then I can get sum n using dice sided 1 to 
+		make sum n
+
+		similary if I know f(n-2) I can always bring 
+		dice sided 2 to bring sum n
+
+		hence , 
+
+		f(n)=f(n-1)+f(n-2)+f(n-3)+f(n-4)+f(n-5)+f(n-6)
+
+		for smaller values sometimes f(n-k) doesn't 
+		exist , we don't need to add that
+
+		base case : f(0)=1 
+	*/
+
+	vector<int> dp(n+1,0);
+	dp[0]=1;
+
+	for(int i=1 ; i<n+1 ; ++i)
+	{
+		for(int j=1 ; j<=6 ; ++j)
+		{
+			if(i-j<0)
+				break;
+			dp[i]=(dp[i]+dp[i-j])%mod;
+		}
+	}
+	cout<<dp[n]<<"\n";
+
+}
+
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+/*
+		n=7
+		3 ince 
+		3 dec
+
+		* * * * * * *
+
+		
+*/
+```
+
+### CSES MINIMIZING COINS 
+
+```cpp
+
+#include<bits/stdc++.h> 
+using namespace std; 
+#define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+const long long  INF = 1e18;
+const long long mod=1e9+7 ;
+#define ll long long 
+
+/*
+	given n,x 
+	and array of length n consisting of coin types
+
+	we have to make sum x using min. no. of coins from 
+	the given coins and print min. no of coins reqd , if 
+	not possible to make sum print -1 
+
+	to make sum x , we can choose different subsets from
+	array to make sum x
+
+	f(x)=min. no. of coins reqd to make sum x using 
+		coin values 
+	we have n coins for this purpose 
+	
+	we have to make sum x
+	Lets consider coin 1 
+	with value coin[1] 
+
+	I know I am using this coin 1 so ans is already 1
+	beacuse I have used it 
+	now I need to know what is the minimum no. of coins
+	required to make sum (x-coin[1])
+
+	I can do the same with coin 2 (with val coin[2])
+
+	or with all other coins
+
+	of course I want minimum of all those ansers
+
+	so 
+
+	f(x)=min(1+f(x-coin[1]),1+f(x-coin[2]),1+f(x-coin[3]))	
+	............ up to n
+
+	also 
+	base case : 
+	f(0)=minimum no. of coins required to make sum 0
+	using coins which is 0
+	f(0)=0 ;
+
+*/
+
+void solve()
+{
+	ll n,x;
+	cin>>n>>x;
+
+	vector<ll> a(n);
+	for(ll i=0 ; i<n ; ++i)
+		cin>>a[i];
+
+	vector<ll> dp(x+1,INF);
+	
+	dp[0]=0;
+
+	for(ll i=1 ; i<x+1 ; ++i)
+	{
+		for(ll j=0 ; j<n ; ++j)
+		{
+			if(i-a[j]<0)
+				continue;
+			dp[i]=min(dp[i],1+dp[i-a[j]]);
+		}
+	}	
+	if(dp[x]==INF)
+		cout<<"-1\n";
+	else
+	cout<<dp[x]<<"\n";	
+
+}
+
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+/*
+		n=7
+		3 ince 
+		3 dec
+
+		* * * * * * *
+
+		
+*/
+```
+
+### CSES Coin Combination 1
+
+```cpp
+#include<bits/stdc++.h> 
+using namespace std; 
+#define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+const long long  INF = 1e18;
+const long long mod=1e9+7 ;
+#define ll long long 
+
+/*
+	given n,x 
+	and array of length n consisting of coin types
+
+	we have to find out how many ways can we make sum
+	x using coin values given
+
+	f(x)=no. of ways of making sum x using available coins
+	
+	again consider a first coin 1
+	with value coin[1]
+
+	If i use this coin and know no. of ways of making
+	coin x-coin[1] this is part of ans 
+
+	similarly for all distinct coin values
+
+	f(x)=f(x-coin[1])+f(x-coin[2])+f(x-coin[3])..upto n
+
+	base case : 
+	f(0)=1 
+	no. of ways to make sum 0 is 1
+
+*/
+
+void solve()
+{
+	ll n,x;
+	cin>>n>>x;
+
+	vector<ll> a(n);
+
+	for(ll i=0 ; i<n ; ++i)
+		cin>>a[i];
+
+	vector<ll> dp(x+1,0);
+
+	dp[0]=1 ;
+
+	for(ll i=1 ; i<x+1 ; ++i)
+	{
+		for(ll j=0 ; j<n ; ++j)
+		{
+			if(i-a[j]<0)
+				continue;
+			dp[i]=(dp[i]%mod+dp[i-a[j]]%mod);
+		}
+	}
+	cout<<dp[x]<<"\n";		
+
+}
+
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+/*
+		n=7
+		3 ince 
+		3 dec
+
+		* * * * * * *
+
+		
+*/
+```
+
+### 
    
    
    
