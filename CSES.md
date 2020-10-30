@@ -2657,8 +2657,322 @@ int main()
 */
 ```
 
-### 
-   
+### CSES Coin Combination 2 
+```cpp
+#include<bits/stdc++.h> 
+using namespace std; 
+#define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+const long long  INF = 1e18;
+const long long mod=1e9+7 ;
+#define ll long long 
+
+/*
+	given n,x 
+	and array of length n consisting of coin types
+
+	task is to find no. of distict ordered ways to 
+	produce sum x using given coin values
+
+	the difference between this problem and the 
+	previous being the order of the coin doesn't matter
+
+	that is 
+	for sum x=9
+
+	2+2+5 and
+	2+5+2 are counted same
+
+	0 1 2 3 4 5 6 7 8 9 10 11 12 13 14
+
+2	1 0 1 0 1 0 1 0 1 0 1  0  1  0  1
+3   1 0 1 1 1 1 2 1 2 2 2  2  3  2  3
+5   1 0 1 1 1 2 2 2 3 3 4
+
+	ok , so...
+
+	because order of the sum doesnt matter
+
+	for the first coin we go through dp array and see
+	what are the no. of ways of making this sum dp[i]
+	using only coin coin[1]
+
+	and we update dp array like this 
+	next we go for the next coin (coin[2])
+
+	now we find what are the no. of ways of making this 
+	sum dp[i] using coin coin[2] and we keep updating dp
+	array
+
+	so.. instead of for each sum dp[i] going through all
+	coins gives sometimes different permutations ,
+	but ,
+	for each coin going through all dp[i] ,
+	makes sure we don't encounter different permutations
+	choosing the coins orderly
+
+
+*/
+
+void solve()
+{
+	ll n,x;
+	cin>>n>>x ;
+
+	vector<ll> a(n);
+
+	for(ll i=0 ; i<n ; ++i)
+		cin>>a[i];
+
+	vector<ll> dp(x+1,0);
+
+	dp[0]=1;
+
+	for(ll i=0 ; i<n ; ++i)
+	{
+		for(ll j=1 ; j<x+1 ; ++j)
+		{
+			if(j-a[i]<0)
+				continue;
+			dp[j]=(dp[j]+dp[j-a[i]])%mod;
+		}
+	}
+	cout<<dp[x]<<"\n";
+
+}
+
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+/*
+		
+*/
+```
+
+### CSES Removing Digits 
+
+doesn't need much explaination after the previos explanations
+
+```cpp
+#include<bits/stdc++.h> 
+using namespace std; 
+#define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+const long long  INF = 1e18;
+const long long mod=1e9+7 ;
+#define ll long long 
+
+/*
+	u are given an integer n. On each step, you may 
+	substract from it any one-digit number that appears 
+	in it.
+	How many steps are required to make the number equal
+	 to 0?
+
+
+	f(n)=min. no of steps reqd to make n to 0 , on 
+	each step substracting any one digit
+
+	for the first number we have 
+	no. of digits in n options 
+
+	f(n)=1+min(n-dig1,n-dig2,n-dig3.....)
+
+	also 
+	f(0)=0 (0 steps)
+
+
+*/
+
+void solve()
+{
+	ll n;
+	cin>>n;
+
+	vector<ll> dp(n+1,INF);
+
+	dp[0]=0;
+
+	for(ll i=1 ; i<n+1 ; ++i)
+	{
+		vector<ll> digits ;
+		ll temp=i;
+		while(temp!=0)
+		{
+			digits.push_back(temp%10);
+			temp/=10;
+		}
+		for(ll j=0 ; j<digits.size() ; ++j)
+		{
+			if(i-digits[j]<0)
+				continue;
+			if(digits[j]!=0)
+			dp[i]=min(dp[i],1+dp[i-digits[j]]);
+		}
+	}
+	cout<<dp[n]<<"\n";
+
+}
+
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+/*
+		
+*/
+```
+
+### CSES GRID PATHS
+
+```cpp
+   #include<bits/stdc++.h> 
+using namespace std; 
+#define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+const long long  INF = 1e18;
+const long long mod=1e9+7 ;
+#define ll long long 
+
+/*
+	no_of_paths(1,1,n,n)=no_of_paths(1,2,n,n)+
+						 no_of_paths(2,1,n,n)
+
+*/
+
+void solve()
+{
+	ll n;
+	cin>>n;
+
+	char a[n][n];	
+	for(ll i=0 ; i<n;  ++i)
+	{
+		for(ll j=0 ; j<n ; ++j)
+			cin>>a[i][j];
+	}
+
+	ll dp[n][n];
+	memset(dp,0,sizeof(dp));
+
+	dp[n-1][n-1]=1 ;
+
+	if(a[n-1][n-1]=='*' || a[0][0]=='*')
+	{
+		cout<<"0\n";
+		return; 
+	}
+
+	for(ll i=n-2 ; i>=0 ; --i)
+	{
+		if(a[n-1][i]!='*')
+			dp[n-1][i]+=dp[n-1][i+1];
+	}
+	for(ll i=n-2 ; i>=0 ; --i)
+	{
+		if(a[i][n-1]!='*')
+			dp[i][n-1]+=dp[i+1][n-1];
+	}
+
+	for(ll i=n-2 ; i>=0 ; --i)
+	{
+		for(ll j=n-2 ; j>=0 ; --j)
+		{
+			if(a[i][j]!='*')
+			{
+				dp[i][j]=(dp[i+1][j]%mod+dp[i][j+1]%mod)%mod;
+			}
+		}
+	}
+
+
+	cout<<dp[0][0]<<"\n";
+}
+
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+/*
+		
+*/
+```
+
+### CSES Book Shop 
+
+similar to 0-1 knacksap 
+
+```cpp
+#include<bits/stdc++.h> 
+using namespace std; 
+#define deb(x) cout <<"\n"<< (#x) << " = " << (x) << "\n"
+const long long  INF = 1e18;
+const long long mod=1e9+7 ;
+#define ll long long 
+
+/*
+	no_of_paths(1,1,n,n)=no_of_paths(1,2,n,n)+
+						 no_of_paths(2,1,n,n)
+
+*/
+
+void solve()
+{
+	int n,x;
+	cin>>n>>x;
+
+	vector<int> price(n),pages(n);
+
+	for(int i=0 ; i<n ; ++i)
+		cin>>price[i];
+	for(int i=0 ; i<n ; ++i)
+		cin>>pages[i];
+
+	vector< vector<int> > dp(n+1,vector<int>(x+1,0));
+
+	for(int i=1 ; i<=n ; ++i)
+	{
+		for(int j=0 ; j<=x ; ++j)
+		{
+			dp[i][j]=dp[i-1][j];
+			int left=j-price[i-1];
+			if(left>=0)
+			{
+				dp[i][j]=max(dp[i][j],pages[i-1]+dp[i-1][left]);
+			}
+		}
+	}
+	cout<<dp[n][x]<<"\n";
+
+}
+
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int t=1;
+  // cin>>t;
+  while(t--)
+    solve();
+}
+/*
+		
+*/
+```
+
    
    
    
