@@ -2923,9 +2923,7 @@ const long long  INF = 1e18;
 const long long mod=1e9+7 ;
 #define ll long long 
 
-/*
-	no_of_paths(1,1,n,n)=no_of_paths(1,2,n,n)+
-						 no_of_paths(2,1,n,n)
+/*			
 
 */
 
